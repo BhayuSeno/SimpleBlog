@@ -1,5 +1,6 @@
 package com.granat.simpleblog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             protected void populateViewHolder(BlogViewHolder viewHolder, Blog model, int position) {
                 viewHolder.setTitle(model.getPost_title());
                 viewHolder.setDesc(model.getPost_desc());
+                viewHolder.setImage(getApplicationContext(), model.getPost_image_url());
             }
         };
 
@@ -70,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
         public void setDesc(String desc){
             TextView post_desc = (TextView)view.findViewById(R.id.postDesc);
             post_desc.setText(desc);
+        }
+        public void setImage(Context context, String image){
+            ImageView post_image = (ImageView) view.findViewById(R.id.postImage);
+            Picasso.with(context).load(image).into(post_image);
         }
     }
     public boolean onCreateOptionsMenu(Menu menu) {

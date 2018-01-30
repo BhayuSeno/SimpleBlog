@@ -50,7 +50,7 @@ public class PostActivity extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.submitButton);
         progressDialog = new ProgressDialog(this);
         storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("com.granat.simpleblog.Blog");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Blog");
 
         imageSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +71,11 @@ public class PostActivity extends AppCompatActivity {
     private void startPosting() {
         try {
             progressDialog.setMessage("Posting");
-            progressDialog.show();
             final String titleValue = postTitle.getText().toString().trim();
             final String descValue = postDesc.getText().toString().trim();
 
             if (!TextUtils.isEmpty(titleValue) && !TextUtils.isEmpty(descValue) && imageUri != null){
+                progressDialog.show();
                 StorageReference filePath = storageReference.child("Blog_Images").child(imageUri.getLastPathSegment());
                 filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -86,9 +86,12 @@ public class PostActivity extends AppCompatActivity {
                             createNewPost.child("post_desc").setValue(descValue);
                             createNewPost.child("post_image_url").setValue(downloadUri.toString());
                             progressDialog.dismiss();
-                        Toast.makeText(PostActivity.this, "Posted Successfully", Toast.LENGTH_SHORT).show();
                     }
                 });
+                Toast.makeText(this, "Posted Successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PostActivity.this, MainActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         }catch (Exception e){
             Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
