@@ -30,9 +30,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/input_outline"
         android:ems="10"
+        android:hint="Name"
         android:inputType="textPersonName"
-        android:padding="15dp"
-        android:text="Name" />
+        android:padding="15dp" />
 
     <Button
         android:id="@+id/setupSubmitButton"
