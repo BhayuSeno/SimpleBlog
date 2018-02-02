@@ -57,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewBlog = (RecyclerView)findViewById(R.id.blog_list);
         recyclerViewBlog.setHasFixedSize(true);
         recyclerViewBlog.setLayoutManager(new LinearLayoutManager(this));
+        checkIfUserExist();
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        checkIfUserExist();
         firebaseAuth.addAuthStateListener(authStateListener);
         FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, BlogViewHolder>(
                 Blog.class,
@@ -85,22 +85,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkIfUserExist() {
         try {
-            final String userID = firebaseAuth.getCurrentUser().getUid();
-            databaseReferenceUsers.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (!dataSnapshot.hasChild(userID)){
-                        Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
-                        setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(setupIntent);
+            if(firebaseAuth.getCurrentUser() != null){
+                final String userID = firebaseAuth.getCurrentUser().getUid();
+                databaseReferenceUsers.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.hasChild(userID)){
+                            Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
+                            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(setupIntent);
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
         }catch (Exception e){
             Toast.makeText(MainActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
@@ -152,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_logout:
                 doLogout();
+                break;
+            case R.id.action_settings:
+                Intent settingIntent = new Intent(MainActivity.this, SetupActivity.class);
+                startActivity(settingIntent);
                 break;
         }
 

@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/input_outline"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:padding="15dp"
+        android:background="@drawable/input_outline"
         android:ems="10"
         android:hint="Email Address"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:padding="15dp" />
 
     <EditText
         android:id="@+id/passwordFieldLogin"
@@ -48,6 +48,16 @@
         android:background="@color/colorPrimary"
         android:text="SIGN IN"
         android:textColor="#FFFFFF" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
 
     <Button
         android:id="@+id/registerFromLoginButton"
